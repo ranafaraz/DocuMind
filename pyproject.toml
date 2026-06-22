@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "documind"
+version = "0.1.0"
+description = "Offline-first layout-aware document key-information extraction (invoices, forms, receipts) scored against ground-truth records: layout geometry buys field-association accuracy, a schema verifier buys arithmetic validity."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Rana Faraz" }]
+keywords = [
+  "document-intelligence", "information-extraction", "kie", "invoice",
+  "layout", "ocr", "table-extraction", "document-ai",
+]
+classifiers = [
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Text Processing",
+]
+# The offline core has zero runtime dependencies -- pure standard library.
+dependencies = []
+
+[project.optional-dependencies]
+# Optional real backends (the offline pipeline needs neither).
+pdf = ["pdfplumber>=0.10"]          # parse real PDFs into tokens+boxes
+ollama = ["requests>=2.28"]         # local LLM extractor
+openai = ["openai>=1.0"]            # hosted LLM extractor
+dev = [
+  "pytest>=7.0",
+  "ruff>=0.1",
+]
+
+[project.scripts]
+documind = "documind.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/ranafaraz/DocuMind"
+Repository = "https://github.com/ranafaraz/DocuMind"
+
+[tool.setuptools.packages.find]
+include = ["documind*", "evals*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E741"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
