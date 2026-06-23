@@ -1,6 +1,5 @@
 name: Initialize Wiki
 on:
-  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/init-wiki.yml'
@@ -17,18 +16,12 @@ jobs:
         run: |
           git config --global user.name "Rana Faraz"
           git config --global user.email "faraz.ahmed@iub.edu.pk"
-          
-          mkdir /tmp/wiki
-          cd /tmp/wiki
+          mkdir /tmp/wiki && cd /tmp/wiki
           git init
-          
-          cat > Home.md << 'WIKIEOF'
-# DocuMind
-          
-Initializing wiki...
-WIKIEOF
-          
+          echo "# DocuMind" > Home.md
+          echo "" >> Home.md
+          echo "Initializing wiki..." >> Home.md
           git add Home.md
           git commit -m "docs: initialize wiki"
-          git remote add origin https://x-access-token:${GITHUB_TOKEN}@github.com/ranafaraz/DocuMind.wiki.git
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/ranafaraz/DocuMind.wiki.git"
           git push -u origin master
